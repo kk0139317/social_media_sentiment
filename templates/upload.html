@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload JSON File</title>
+</head>
+<body>
+    <h2>Upload JSON File</h2>
+    <form action="/uploadtweets/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="json_file" accept=".json" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
