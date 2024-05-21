@@ -130,6 +130,69 @@ class UploadJsonView(View):
             return JsonResponse({'error': str(e)}, status=500)
 
 
+class UploadatadatdJsonView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            
+            uploaded_file = request.FILES['json_file']
+            data = json.load(uploaded_file)
+
+            for item in data:
+                
+                    end_year= item['end_year']
+                    if end_year =="":
+                        end_year = None
+                    intensity=item['intensity']
+                    if intensity == "":
+                        intensity = None
+                    sector=item['sector']
+                    topic=item['topic']
+                    insight=item['insight']
+                    url=item['url']
+                    region=item['region']
+                    start_year=item['start_year']
+                    if start_year=="":
+                        start_year = None
+                    impact=item['impact']
+                    if impact == "":
+                        impact = None
+                    added=item['added']
+                    try:
+                        parsed_date = datetime.strptime(added, "%B, %d %Y %H:%M:%S")
+                        added = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+                    except:
+                        added = None
+                    published=item['published']
+                    try:
+                        parsed_date = datetime.strptime(published, "%B, %d %Y %H:%M:%S")
+                        published = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+                    except:
+                        published = None
+                    country=item['country']
+                    relevance=item['relevance']
+                    if relevance == "":
+                        relevance = None
+                    pestle=item['pestle']
+                    source=item['source']
+                    title=item['title']
+                    likelihood=item['likelihood']
+                    if likelihood == "":
+                        likelihood = None
+
+                    BlackOffer.objects.create( end_year=end_year, intensity=intensity,
+                                              sector=sector, topic=topic, insight=insight,
+                                              url=url, region=region, start_year=start_year,
+                                              impact=impact, added=added, published=published,
+                                              country=country, relevance=relevance, pestle=pestle,
+                                              source=source, title=title, likelihood=likelihood
+                )
+
+            return JsonResponse({'message': 'Data uploaded successfully'}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+
 class UploadTweet(View):
     def post(self, request, *args, **kwargs):
         try:
